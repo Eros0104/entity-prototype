@@ -96,6 +96,13 @@ func main() {
 			fmt.Println("No collision detected")
 		}
 
+		// Check for collision
+		if playerCollider.CheckCollision(followerCollider) {
+			fmt.Println("Collision detected between player and follower")
+		} else {
+			fmt.Println("No collision detected")
+		}
+
 		renderer.Present()
 	}
 }
