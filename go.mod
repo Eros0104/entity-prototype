@@ -1,4 +1,4 @@
-module example/entity-prototype
+module entity-prototype
 
 go 1.22.2
 

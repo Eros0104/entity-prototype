@@ -1,6 +1,8 @@
 package main
 
 import (
+	"entity-prototype/components"
+	ecs "entity-prototype/entity_component_system"
 	"fmt"
 
 	"github.com/veandco/go-sdl2/sdl"
@@ -31,9 +33,18 @@ func main() {
 	}
 	defer renderer.Destroy()
 
-	// Start player
-	player := NewCharacter(100, 100, 50, 50)
-	player2 := NewCharacter2(200, 200, 50, 50)
+	manager := ecs.Manager{}
+
+	// Create two entities
+	player := manager.AddEntity()
+	wall := manager.AddEntity()
+
+	// Add ColliderComponent to player and wall
+	playerCollider := &components.ColliderComponent{X: 0, Y: 0, Width: 50, Height: 50}
+	wallCollider := &components.ColliderComponent{X: 30, Y: 30, Width: 50, Height: 50}
+
+	player.AddComponent(playerCollider)
+	wall.AddComponent(wallCollider)
 
 	// Main loop
 	running := true
@@ -51,14 +62,19 @@ func main() {
 		renderer.SetDrawColor(0, 0, 0, 255)
 		renderer.Clear()
 
-		// Draw your game objects here
-		player.Draw(renderer)
-		player2.Draw(renderer)
-
 		// Update the screen
-		player.Update()
-		player2.Update(player)
-		renderer.Present()
+		manager.Update()
 
+		// Draw your game objects here
+		manager.Draw(renderer)
+
+		// Check for collision
+		if playerCollider.CheckCollision(wallCollider) {
+			fmt.Println("Collision detected between player and wall")
+		} else {
+			fmt.Println("No collision detected")
+		}
+
+		renderer.Present()
 	}
 }
