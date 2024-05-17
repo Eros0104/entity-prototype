@@ -1,7 +1,7 @@
 package components
 
 import (
-	ecs "entity-prototype/entity_component_system"
+	ecs "entity-prototype/src/entity_component_system"
 	"fmt"
 
 	"github.com/veandco/go-sdl2/sdl"

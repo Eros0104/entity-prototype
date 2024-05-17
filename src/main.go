@@ -1,8 +1,8 @@
 package main
 
 import (
-	"entity-prototype/components"
-	ecs "entity-prototype/entity_component_system"
+	"entity-prototype/src/components"
+	ecs "entity-prototype/src/entity_component_system"
 	"fmt"
 
 	"github.com/veandco/go-sdl2/sdl"
