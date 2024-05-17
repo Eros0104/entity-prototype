@@ -21,8 +21,7 @@ func (c *ColliderComponent) Update() {
 }
 
 func (c *ColliderComponent) Draw(renderer *sdl.Renderer) {
-	renderer.SetDrawColor(0, 255, 0, 255)
-	renderer.DrawRect(&sdl.Rect{int32(c.X), int32(c.Y), int32(c.Width), int32(c.Height)})
+
 }
 
 func (c *ColliderComponent) CheckCollision(other *ColliderComponent) bool {

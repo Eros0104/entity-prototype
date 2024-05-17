@@ -37,22 +37,26 @@ func main() {
 
 	// Create two entities
 	player := manager.AddEntity()
-	playerX, playerY := 100.0, 100.0
-	playerSize := 50.0
 
 	wall := manager.AddEntity()
 
 	// Add ColliderComponent to player and wall
-	playerCollider := &components.ColliderComponent{X: playerX, Y: playerY, Width: playerSize, Height: playerSize}
+	playerCollider := &components.ColliderComponent{X: 100, Y: 100, Width: 50, Height: 50}
 	wallCollider := &components.ColliderComponent{X: 30, Y: 30, Width: 50, Height: 50}
 
 	// Add input handler component to player
 	playerInputHandler := &components.InputHandlerComponent{Speed: 1}
 
+	// Add rect component to player and wall
+	playerRect := &components.RectComponent{R: 255, G: 0, B: 0, A: 255}
+	wallRect := &components.RectComponent{R: 0, G: 255, B: 0, A: 255}
+
 	player.AddComponent(playerCollider)
 	player.AddComponent(playerInputHandler)
+	player.AddComponent(playerRect)
 
 	wall.AddComponent(wallCollider)
+	wall.AddComponent(wallRect)
 
 	// Main loop
 	running := true
