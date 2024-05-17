@@ -1,6 +1,7 @@
 package ecs
 
 import (
+	"fmt"
 	"reflect"
 
 	"github.com/veandco/go-sdl2/sdl"
@@ -32,6 +33,7 @@ func (e *Entity) Draw(renderer *sdl.Renderer) {
 
 func (e *Entity) AddComponent(c Component) {
 	typeName := reflect.TypeOf(c).String()
+	fmt.Println("Adding component:", typeName)
 	e.components[typeName] = c
 	c.SetEntity(e)
 	c.Init()
