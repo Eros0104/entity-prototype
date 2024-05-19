@@ -42,3 +42,7 @@ func (e *Entity) AddComponent(c Component) {
 func (e *Entity) GetComponent(typeName string) Component {
 	return e.components[typeName]
 }
+
+func (e *Entity) GetManager() *Manager {
+	return e.manager
+}

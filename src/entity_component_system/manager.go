@@ -4,6 +4,7 @@ import "github.com/veandco/go-sdl2/sdl"
 
 type Manager struct {
 	entities []*Entity
+	Renderer *sdl.Renderer
 }
 
 func (m *Manager) Update() {

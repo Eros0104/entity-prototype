@@ -38,12 +38,15 @@ func main() {
 	}
 	defer renderer.Destroy()
 
-	manager := ecs.Manager{}
+	manager := ecs.Manager{Renderer: renderer}
 
 	// Create two entities
 	player := manager.AddEntity()
 	follower := manager.AddEntity()
 	wall := manager.AddEntity()
+
+	// Add SpriteComponent to player
+	playerSprite := &components.SpriteComponent{TexturePath: "assets/player.png"}
 
 	// Add TransformComponent to player and wall
 	playerTransform := &components.TransformComponent{X: 100, Y: 100, Width: 50, Height: 50}
@@ -65,6 +68,9 @@ func main() {
 
 	// Add follow component to follower
 	followerFollow := &components.FollowComponent{Destination: player, Speed: 0.5}
+
+	// Add components to entities
+	player.AddComponent(playerSprite)
 
 	player.AddComponent(playerTransform)
 	wall.AddComponent(wallTransform)
