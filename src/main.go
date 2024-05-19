@@ -109,7 +109,7 @@ func main() {
 		manager.Update()
 
 		// Draw your game objects here
-		manager.Draw(renderer)
+		manager.Draw()
 
 		// Check for collision
 		if playerCollider.CheckCollision(wallCollider) {

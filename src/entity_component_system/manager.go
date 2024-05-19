@@ -13,9 +13,9 @@ func (m *Manager) Update() {
 	}
 }
 
-func (m *Manager) Draw(renderer *sdl.Renderer) {
+func (m *Manager) Draw() {
 	for _, e := range m.entities {
-		e.Draw(renderer)
+		e.Draw(m.Renderer)
 	}
 }
 
