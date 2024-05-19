@@ -23,8 +23,8 @@ func (c *RectComponent) Update() {
 
 func (c *RectComponent) Draw(renderer *sdl.Renderer) {
 	renderer.SetDrawColor(c.R, c.G, c.B, c.A)
-	typeName := reflect.TypeOf((*ColliderComponent)(nil)).String()
-	pos := c.GetEntity().GetComponent(typeName).(*ColliderComponent)
+	typeName := reflect.TypeOf((*TransformComponent)(nil)).String()
+	pos := c.GetEntity().GetComponent(typeName).(*TransformComponent)
 	renderer.DrawRect(&sdl.Rect{int32(pos.X), int32(pos.Y), int32(pos.Width), int32(pos.Height)})
 }
 

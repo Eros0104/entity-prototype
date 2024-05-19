@@ -45,6 +45,11 @@ func main() {
 	follower := manager.AddEntity()
 	wall := manager.AddEntity()
 
+	// Add TransformComponent to player and wall
+	playerTransform := &components.TransformComponent{X: 100, Y: 100, Width: 50, Height: 50}
+	wallTransform := &components.TransformComponent{X: 30, Y: 30, Width: 50, Height: 50}
+	followerTransform := &components.TransformComponent{X: 200, Y: 200, Width: 50, Height: 50}
+
 	// Add ColliderComponent to player and wall
 	playerCollider := &components.ColliderComponent{X: 100, Y: 100, Width: 50, Height: 50}
 	wallCollider := &components.ColliderComponent{X: 30, Y: 30, Width: 50, Height: 50}
@@ -59,7 +64,11 @@ func main() {
 	followerRect := &components.RectComponent{R: 0, G: 0, B: 255, A: 255}
 
 	// Add follow component to follower
-	followerFollow := &components.FollowComponent{Destination: playerCollider, Speed: 0.5}
+	followerFollow := &components.FollowComponent{Destination: player, Speed: 0.5}
+
+	player.AddComponent(playerTransform)
+	wall.AddComponent(wallTransform)
+	follower.AddComponent(followerTransform)
 
 	player.AddComponent(playerCollider)
 	player.AddComponent(playerInputHandler)

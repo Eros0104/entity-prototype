@@ -10,7 +10,7 @@ import (
 
 type FollowComponent struct {
 	ecs.BaseComponent
-	Destination *ColliderComponent
+	Destination *ecs.Entity
 	Speed       float64
 }
 
@@ -19,22 +19,23 @@ func (c *FollowComponent) Init() {
 }
 
 func (c *FollowComponent) Update() {
-	typeName := reflect.TypeOf((*ColliderComponent)(nil)).String()
-	pos := c.GetEntity().GetComponent(typeName).(*ColliderComponent)
+	typeName := reflect.TypeOf((*TransformComponent)(nil)).String()
+	pos := c.GetEntity().GetComponent(typeName).(*TransformComponent)
 
 	if c.Destination != nil {
+		destination := c.Destination.GetComponent(typeName).(*TransformComponent)
 
 		// moves gradually towards the destination
-		if c.Destination.X > pos.X {
+		if pos.X < destination.X {
 			pos.X += c.Speed
 		}
-		if c.Destination.X < pos.X {
+		if pos.X > destination.X {
 			pos.X -= c.Speed
 		}
-		if c.Destination.Y > pos.Y {
+		if pos.Y < destination.Y {
 			pos.Y += c.Speed
 		}
-		if c.Destination.Y < pos.Y {
+		if pos.Y > destination.Y {
 			pos.Y -= c.Speed
 		}
 	}
@@ -44,7 +45,7 @@ func (c *FollowComponent) Draw(renderer *sdl.Renderer) {
 
 }
 
-func (c *FollowComponent) Follow(other *ColliderComponent) {
+func (c *FollowComponent) Follow(other *ecs.Entity) {
 	c.Destination = other
 }
 

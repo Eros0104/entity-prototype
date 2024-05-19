@@ -19,8 +19,8 @@ func (c *InputHandlerComponent) Init() {
 
 func (c *InputHandlerComponent) Update() {
 	keys := sdl.GetKeyboardState()
-	typeName := reflect.TypeOf((*ColliderComponent)(nil)).String()
-	pos := c.GetEntity().GetComponent(typeName).(*ColliderComponent)
+	typeName := reflect.TypeOf((*TransformComponent)(nil)).String()
+	pos := c.GetEntity().GetComponent(typeName).(*TransformComponent)
 
 	if keys[sdl.SCANCODE_W] == 1 {
 		pos.Y -= c.Speed
