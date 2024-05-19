@@ -51,9 +51,9 @@ func main() {
 	followerTransform := &components.TransformComponent{X: 200, Y: 200, Width: 50, Height: 50}
 
 	// Add ColliderComponent to player and wall
-	playerCollider := &components.ColliderComponent{X: 100, Y: 100, Width: 50, Height: 50}
-	wallCollider := &components.ColliderComponent{X: 30, Y: 30, Width: 50, Height: 50}
-	followerCollider := &components.ColliderComponent{X: 200, Y: 200, Width: 50, Height: 50}
+	playerCollider := &components.ColliderComponent{}
+	wallCollider := &components.ColliderComponent{}
+	followerCollider := &components.ColliderComponent{}
 
 	// Add input handler component to player
 	playerInputHandler := &components.InputHandlerComponent{Speed: 5}

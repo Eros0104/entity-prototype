@@ -10,7 +10,6 @@ import (
 
 type ColliderComponent struct {
 	ecs.BaseComponent
-	X, Y, Width, Height float64
 }
 
 func (c *ColliderComponent) Init() {
@@ -30,10 +29,10 @@ func (c *ColliderComponent) CheckCollision(other *ColliderComponent) bool {
 	myPos := c.GetEntity().GetComponent(typeName).(*TransformComponent)
 	otherPos := other.GetEntity().GetComponent(typeName).(*TransformComponent)
 
-	return myPos.X < otherPos.X+other.Width &&
-		myPos.X+c.Width > otherPos.X &&
-		myPos.Y < otherPos.Y+other.Height &&
-		myPos.Y+c.Height > otherPos.Y
+	return myPos.X < otherPos.X+otherPos.Width &&
+		myPos.X+myPos.Width > otherPos.X &&
+		myPos.Y < otherPos.Y+otherPos.Height &&
+		myPos.Y+myPos.Height > otherPos.Y
 }
 
 func (c *ColliderComponent) SetEntity(e *ecs.Entity) {
