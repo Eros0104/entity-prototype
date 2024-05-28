@@ -114,6 +114,7 @@ func main() {
 		// Check for collision
 		if playerCollider.CheckCollision(wallCollider) {
 			fmt.Println("Collision detected between player and wall")
+			push_collider(wallTransform, playerTransform)
 		} else {
 			fmt.Println("No collision detected")
 		}
@@ -121,6 +122,7 @@ func main() {
 		// Check for collision
 		if playerCollider.CheckCollision(followerCollider) {
 			fmt.Println("Collision detected between player and follower")
+			push_collider(playerTransform, followerTransform)
 		} else {
 			fmt.Println("No collision detected")
 		}
