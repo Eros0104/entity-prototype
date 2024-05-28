@@ -112,20 +112,9 @@ func main() {
 		manager.Draw()
 
 		// Check for collision
-		if playerCollider.CheckCollision(wallCollider) {
-			fmt.Println("Collision detected between player and wall")
-			push_collider(wallTransform, playerTransform)
-		} else {
-			fmt.Println("No collision detected")
-		}
-
-		// Check for collision
-		if playerCollider.CheckCollision(followerCollider) {
-			fmt.Println("Collision detected between player and follower")
-			push_collider(playerTransform, followerTransform)
-		} else {
-			fmt.Println("No collision detected")
-		}
+		aabb(wallTransform, playerTransform)
+		aabb(wallTransform, followerTransform)
+		aabb(playerTransform, followerTransform)
 
 		renderer.Present()
 

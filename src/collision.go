@@ -4,8 +4,8 @@ import (
 	"entity-prototype/src/components"
 )
 
-// push_collider adjusts the position of c2 to push it away from c1 based on their AABB collision.
-func push_collider(c1 *components.TransformComponent, c2 *components.TransformComponent) {
+// adjusts the position of c2 to push it away from c1 based on their AABB collision.
+func aabb(c1 *components.TransformComponent, c2 *components.TransformComponent) {
 	// Calculate the half-widths and half-heights
 	halfWidthC1 := c1.Width / 2
 	halfHeightC1 := c1.Height / 2
