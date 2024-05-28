@@ -37,7 +37,6 @@ func (c *InputHandlerComponent) Update() {
 }
 
 func (c *InputHandlerComponent) Draw(renderer *sdl.Renderer) {
-	// Drawing logic if needed
 }
 
 func (c *InputHandlerComponent) SetEntity(e *ecs.Entity) {
