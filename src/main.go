@@ -4,6 +4,7 @@ import (
 	"entity-prototype/src/components"
 	ecs "entity-prototype/src/entity_component_system"
 	"fmt"
+	"reflect"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -87,6 +88,9 @@ func main() {
 	follower.AddComponent(followerRect)
 	follower.AddComponent(followerFollow)
 
+	colliderType := reflect.TypeOf((*components.ColliderComponent)(nil)).String()
+	collidersGroup := manager.GetComponentGroup(colliderType)
+
 	// Main loop
 	running := true
 	for running {
@@ -112,9 +116,11 @@ func main() {
 		manager.Draw()
 
 		// Check for collision
-		aabb(wallTransform, playerTransform)
-		aabb(wallTransform, followerTransform)
-		aabb(playerTransform, followerTransform)
+		ManageCollisions(collidersGroup)
+
+		// aabb(wallTransform, playerTransform)
+		// aabb(wallTransform, followerTransform)
+		// aabb(playerTransform, followerTransform)
 
 		renderer.Present()
 

@@ -2,6 +2,9 @@ package main
 
 import (
 	"entity-prototype/src/components"
+	ecs "entity-prototype/src/entity_component_system"
+	"fmt"
+	"reflect"
 )
 
 // adjusts the position of c2 to push it away from c1 based on their AABB collision.
@@ -45,6 +48,20 @@ func aabb(c1 *components.TransformComponent, c2 *components.TransformComponent) 
 			c2.Y += overlapY // Push c2 down
 		} else {
 			c2.Y -= overlapY // Push c2 up
+		}
+	}
+}
+
+func ManageCollisions(collidersGroup []*ecs.Entity) {
+	colliderType := ecs.GetComponentName((*components.ColliderComponent)(nil))
+	for i := 0; i < len(collidersGroup); i++ {
+		for j := i + 1; j < len(collidersGroup); j++ {
+			if collidersGroup[i].GetComponent(colliderType).(*components.ColliderComponent).CheckCollision(collidersGroup[j].GetComponent(colliderType).(*components.ColliderComponent)) {
+				fmt.Println("Collision detected")
+				aabb(collidersGroup[i].GetComponent(colliderType).(*components.ColliderComponent).GetEntity().GetComponent(reflect.TypeOf((*components.TransformComponent)(nil)).String()).(*components.TransformComponent), collidersGroup[j].GetComponent(colliderType).(*components.ColliderComponent).GetEntity().GetComponent(reflect.TypeOf((*components.TransformComponent)(nil)).String()).(*components.TransformComponent))
+			} else {
+				fmt.Println("No collision")
+			}
 		}
 	}
 }

@@ -24,3 +24,13 @@ func (m *Manager) AddEntity() *Entity {
 	m.entities = append(m.entities, entity)
 	return entity
 }
+
+func (m *Manager) GetComponentGroup(typeName string) []*Entity {
+	var group []*Entity
+	for _, e := range m.entities {
+		if e.HasComponent(typeName) {
+			group = append(group, e)
+		}
+	}
+	return group
+}

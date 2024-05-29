@@ -3,7 +3,6 @@ package components
 import (
 	ecs "entity-prototype/src/entity_component_system"
 	"fmt"
-	"reflect"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -25,7 +24,7 @@ func (c *ColliderComponent) Draw(renderer *sdl.Renderer) {
 }
 
 func (c *ColliderComponent) CheckCollision(other *ColliderComponent) bool {
-	typeName := reflect.TypeOf((*TransformComponent)(nil)).String()
+	typeName := ecs.GetComponentName((*TransformComponent)(nil))
 	myPos := c.GetEntity().GetComponent(typeName).(*TransformComponent)
 	otherPos := other.GetEntity().GetComponent(typeName).(*TransformComponent)
 

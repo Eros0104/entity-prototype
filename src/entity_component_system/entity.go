@@ -46,3 +46,8 @@ func (e *Entity) GetComponent(typeName string) Component {
 func (e *Entity) GetManager() *Manager {
 	return e.manager
 }
+
+func (e *Entity) HasComponent(typeName string) bool {
+	_, ok := e.components[typeName]
+	return ok
+}
