@@ -46,8 +46,9 @@ func main() {
 	follower := manager.AddEntity()
 	wall := manager.AddEntity()
 
-	// Add SpriteComponent to player
+	// Add SpriteComponent
 	playerSprite := &components.SpriteComponent{TexturePath: "assets/player.png"}
+	followerSprite := &components.SpriteComponent{TexturePath: "assets/goblin.png"}
 
 	// Add TransformComponent to player and wall
 	playerTransform := &components.TransformComponent{X: 100, Y: 100, Width: 50, Height: 50}
@@ -87,6 +88,7 @@ func main() {
 	follower.AddComponent(followerCollider)
 	follower.AddComponent(followerRect)
 	follower.AddComponent(followerFollow)
+	follower.AddComponent(followerSprite)
 
 	colliderType := reflect.TypeOf((*components.ColliderComponent)(nil)).String()
 	collidersGroup := manager.GetComponentGroup(colliderType)
