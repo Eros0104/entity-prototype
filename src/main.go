@@ -1,10 +1,11 @@
 package main
 
 import (
-	"entity-prototype/src/components"
-	ecs "entity-prototype/src/entity_component_system"
 	"fmt"
 	"reflect"
+
+	"entity-prototype/src/components"
+	ecs "entity-prototype/src/entity_component_system"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -47,7 +48,13 @@ func main() {
 	wall := manager.AddEntity()
 
 	// Add SpriteComponent
-	playerSprite := &components.SpriteComponent{TexturePath: "assets/player.png"}
+	pSpriteSize := int32(16)
+	pSpriteTFrames := int32(8)
+	playerSprite := &components.SpriteComponent{
+		TexturePath: "assets/orangutan-sprite.png",
+		SpriteSize:  &pSpriteSize,
+		TotalFrames: &pSpriteTFrames,
+	}
 	followerSprite := &components.SpriteComponent{TexturePath: "assets/goblin.png"}
 
 	// Add TransformComponent to player and wall
