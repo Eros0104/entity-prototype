@@ -22,8 +22,10 @@ func (c *InputHandlerComponent) Init() {
 func (c *InputHandlerComponent) Update(dt float64) {
 	x, y := 0.0, 0.0
 	keys := sdl.GetKeyboardState()
-	typeName := reflect.TypeOf((*TransformComponent)(nil)).String()
-	pos := c.GetEntity().GetComponent(typeName).(*TransformComponent)
+	posTypeName := reflect.TypeOf((*TransformComponent)(nil)).String()
+	pos := c.GetEntity().GetComponent(posTypeName).(*TransformComponent)
+	sprTypeName := reflect.TypeOf((*SpriteComponent)(nil)).String()
+	spr := c.GetEntity().GetComponent(sprTypeName).(*SpriteComponent)
 
 	if keys[sdl.SCANCODE_W] == 1 {
 		y -= 1
@@ -41,8 +43,14 @@ func (c *InputHandlerComponent) Update(dt float64) {
 	length := math.Sqrt(y*y + x*x)
 
 	if length > 0 {
+		// move character
 		x = x / length
 		y = y / length
+
+		// play anim
+		spr.Play("walking")
+	} else {
+		spr.Play("idle")
 	}
 
 	pos.Y += y * c.Speed * dt

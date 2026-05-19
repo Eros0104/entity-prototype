@@ -17,6 +17,14 @@ type SpriteComponent struct {
 	TexturePath string
 	Texture     *sdl.Texture
 
+	Animations       []SpriteAnimator
+	currentAnimation string
+	accumulator      float64
+	currentStep      int32
+}
+
+type SpriteAnimator struct {
+	Name        string
 	SpriteSize  *int32
 	TotalFrames *int32
 	CurrentStep *int32
@@ -24,7 +32,34 @@ type SpriteComponent struct {
 }
 
 func (c *SpriteComponent) isAnimated() bool {
-	return c.SpriteSize != nil && c.TotalFrames != nil && c.CurrentStep != nil
+	return len(c.Animations) > 0
+}
+
+func (c *SpriteComponent) getAnimationByName(name string) *SpriteAnimator {
+	for i := 0; i < len(c.Animations); i++ {
+		if c.Animations[i].Name == name {
+			return &c.Animations[i]
+		}
+	}
+
+	return nil
+}
+
+func (c *SpriteComponent) getCurrentAnimation() *SpriteAnimator {
+	return c.getAnimationByName(c.currentAnimation)
+}
+
+func (c *SpriteComponent) Play(animName string) {
+	if c.currentAnimation == animName {
+		return
+	}
+	if c.getAnimationByName(animName) == nil {
+		return
+	}
+
+	c.currentAnimation = animName
+	c.currentStep = 1
+	c.accumulator = 0
 }
 
 func (c *SpriteComponent) Init() {
@@ -38,8 +73,11 @@ func (c *SpriteComponent) Init() {
 		return
 	}
 	c.Texture = texture
-	s := int32(1)
-	c.CurrentStep = &s
+	c.currentStep = 1
+
+	if c.isAnimated() {
+		c.currentAnimation = c.Animations[0].Name
+	}
 }
 
 func (c *SpriteComponent) Update(dt float64) {
@@ -47,13 +85,15 @@ func (c *SpriteComponent) Update(dt float64) {
 		return
 	}
 
+	curAnim := c.getCurrentAnimation()
+
 	c.accumulator += dt
 	frameDuration := 1.0 / animFPS
 	for c.accumulator >= frameDuration {
 		c.accumulator -= frameDuration
-		*c.CurrentStep += 1
-		if *c.CurrentStep >= *c.TotalFrames {
-			*c.CurrentStep = 1
+		c.currentStep += 1
+		if c.currentStep >= *curAnim.TotalFrames {
+			c.currentStep = 1
 		}
 	}
 }
@@ -65,11 +105,12 @@ func (c *SpriteComponent) Draw(renderer *sdl.Renderer) {
 	var currentFrame *sdl.Rect = nil
 
 	if c.isAnimated() {
+		curAnim := c.getCurrentAnimation()
 		currentFrame = &sdl.Rect{
-			X: *c.SpriteSize * *c.CurrentStep,
+			X: *curAnim.SpriteSize * (c.currentStep - 1),
 			Y: 0,
-			W: *c.SpriteSize,
-			H: *c.SpriteSize,
+			W: *curAnim.SpriteSize,
+			H: *curAnim.SpriteSize,
 		}
 	}
 

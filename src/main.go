@@ -50,11 +50,14 @@ func main() {
 
 	// Add SpriteComponent
 	pSpriteSize := int32(16)
-	pSpriteTFrames := int32(8)
+	pSpriteTFramesI := int32(1)
+	pSpriteTFramesW := int32(8)
 	playerSprite := &components.SpriteComponent{
 		TexturePath: "assets/orangutan-sprite.png",
-		SpriteSize:  &pSpriteSize,
-		TotalFrames: &pSpriteTFrames,
+		Animations: []components.SpriteAnimator{
+			{Name: "idle", SpriteSize: &pSpriteSize, TotalFrames: &pSpriteTFramesI},
+			{Name: "walking", SpriteSize: &pSpriteSize, TotalFrames: &pSpriteTFramesW},
+		},
 	}
 	followerSprite := &components.SpriteComponent{TexturePath: "assets/goblin.png"}
 
