@@ -10,6 +10,8 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 )
 
+const animFPS = 8.0
+
 type SpriteComponent struct {
 	ecs.BaseComponent
 	TexturePath string
@@ -18,6 +20,7 @@ type SpriteComponent struct {
 	SpriteSize  *int32
 	TotalFrames *int32
 	CurrentStep *int32
+	accumulator float64
 }
 
 func (c *SpriteComponent) isAnimated() bool {
@@ -27,10 +30,8 @@ func (c *SpriteComponent) isAnimated() bool {
 func (c *SpriteComponent) Init() {
 	fmt.Println("RectComponent initialized")
 
-	// get the renderer from the manager
 	renderer := c.GetEntity().GetManager().Renderer
 
-	// loads the texture
 	texture, err := img.LoadTexture(renderer, c.TexturePath)
 	if err != nil {
 		fmt.Println("Failed to load texture:", err)
@@ -41,16 +42,20 @@ func (c *SpriteComponent) Init() {
 	c.CurrentStep = &s
 }
 
-func (c *SpriteComponent) Update() {
+func (c *SpriteComponent) Update(dt float64) {
 	if !c.isAnimated() {
 		return
 	}
 
-	if *c.CurrentStep == *c.TotalFrames-1 {
-		*c.CurrentStep = 1
+	c.accumulator += dt
+	frameDuration := 1.0 / animFPS
+	for c.accumulator >= frameDuration {
+		c.accumulator -= frameDuration
+		*c.CurrentStep += 1
+		if *c.CurrentStep >= *c.TotalFrames {
+			*c.CurrentStep = 1
+		}
 	}
-
-	*c.CurrentStep += 1
 }
 
 func (c *SpriteComponent) Draw(renderer *sdl.Renderer) {

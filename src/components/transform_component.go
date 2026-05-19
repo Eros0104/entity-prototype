@@ -17,7 +17,7 @@ func (c *TransformComponent) Init() {
 	fmt.Println("Position component initialized")
 }
 
-func (c *TransformComponent) Update() {
+func (c *TransformComponent) Update(dt float64) {
 
 }
 

@@ -15,6 +15,7 @@ func main() {
 	const frameDelay uint32 = 1000 / FPS
 
 	var frameStart, frameTime uint32
+	var lastTime uint32
 
 	// Initialize SDL
 	err := sdl.Init(uint32(sdl.INIT_EVERYTHING))
@@ -68,7 +69,7 @@ func main() {
 	followerCollider := &components.ColliderComponent{}
 
 	// Add input handler component to player
-	playerInputHandler := &components.InputHandlerComponent{Speed: 5}
+	playerInputHandler := &components.InputHandlerComponent{Speed: 300}
 
 	// Add rect component to player and wall
 	playerRect := &components.RectComponent{R: 255, G: 0, B: 0, A: 255}
@@ -76,7 +77,7 @@ func main() {
 	followerRect := &components.RectComponent{R: 0, G: 0, B: 255, A: 255}
 
 	// Add follow component to follower
-	followerFollow := &components.FollowComponent{Destination: player, Speed: 0.5}
+	followerFollow := &components.FollowComponent{Destination: player, Speed: 30}
 
 	// Add components to entities
 	player.AddComponent(playerSprite)
@@ -101,9 +102,12 @@ func main() {
 	collidersGroup := manager.GetComponentGroup(colliderType)
 
 	// Main loop
+	lastTime = sdl.GetTicks()
 	running := true
 	for running {
 		frameStart = sdl.GetTicks()
+		dt := float64(frameStart-lastTime) / 1000.0
+		lastTime = frameStart
 
 		// Handle events
 		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
@@ -119,7 +123,7 @@ func main() {
 		renderer.Clear()
 
 		// Update the screen
-		manager.Update()
+		manager.Update(dt)
 
 		// Draw your game objects here
 		manager.Draw()

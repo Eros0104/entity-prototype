@@ -18,25 +18,25 @@ func (c *FollowComponent) Init() {
 	fmt.Println("RectComponent initialized")
 }
 
-func (c *FollowComponent) Update() {
+func (c *FollowComponent) Update(dt float64) {
 	typeName := reflect.TypeOf((*TransformComponent)(nil)).String()
 	pos := c.GetEntity().GetComponent(typeName).(*TransformComponent)
 
 	if c.Destination != nil {
 		destination := c.Destination.GetComponent(typeName).(*TransformComponent)
 
-		// moves gradually towards the destination
+		step := c.Speed * dt
 		if pos.X < destination.X {
-			pos.X += c.Speed
+			pos.X += step
 		}
 		if pos.X > destination.X {
-			pos.X -= c.Speed
+			pos.X -= step
 		}
 		if pos.Y < destination.Y {
-			pos.Y += c.Speed
+			pos.Y += step
 		}
 		if pos.Y > destination.Y {
-			pos.Y -= c.Speed
+			pos.Y -= step
 		}
 	}
 }

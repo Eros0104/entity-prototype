@@ -17,7 +17,7 @@ func (c *RectComponent) Init() {
 	fmt.Println("RectComponent initialized")
 }
 
-func (c *RectComponent) Update() {
+func (c *RectComponent) Update(dt float64) {
 
 }
 

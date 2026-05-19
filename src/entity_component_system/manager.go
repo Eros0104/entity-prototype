@@ -7,9 +7,9 @@ type Manager struct {
 	Renderer *sdl.Renderer
 }
 
-func (m *Manager) Update() {
+func (m *Manager) Update(dt float64) {
 	for _, e := range m.entities {
-		e.Update()
+		e.Update(dt)
 	}
 }
 

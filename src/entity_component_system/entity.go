@@ -19,9 +19,9 @@ func NewEntity(manager *Manager) *Entity {
 	}
 }
 
-func (e *Entity) Update() {
+func (e *Entity) Update(dt float64) {
 	for _, c := range e.components {
-		c.Update()
+		c.Update(dt)
 	}
 }
 

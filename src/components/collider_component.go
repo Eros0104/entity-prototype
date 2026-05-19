@@ -15,7 +15,7 @@ func (c *ColliderComponent) Init() {
 	fmt.Println("ColliderComponent initialized")
 }
 
-func (c *ColliderComponent) Update() {
+func (c *ColliderComponent) Update(dt float64) {
 
 }
 

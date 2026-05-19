@@ -19,7 +19,7 @@ func (c *InputHandlerComponent) Init() {
 	fmt.Println("InputHandlerComponent initialized")
 }
 
-func (c *InputHandlerComponent) Update() {
+func (c *InputHandlerComponent) Update(dt float64) {
 	x, y := 0.0, 0.0
 	keys := sdl.GetKeyboardState()
 	typeName := reflect.TypeOf((*TransformComponent)(nil)).String()
@@ -45,8 +45,8 @@ func (c *InputHandlerComponent) Update() {
 		y = y / length
 	}
 
-	pos.Y += y * c.Speed
-	pos.X += x * c.Speed
+	pos.Y += y * c.Speed * dt
+	pos.X += x * c.Speed * dt
 }
 
 func (c *InputHandlerComponent) Draw(renderer *sdl.Renderer) {
