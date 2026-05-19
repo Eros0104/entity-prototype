@@ -1,9 +1,11 @@
 package components
 
 import (
-	ecs "entity-prototype/src/entity_component_system"
 	"fmt"
+	"math"
 	"reflect"
+
+	ecs "entity-prototype/src/entity_component_system"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -18,22 +20,33 @@ func (c *InputHandlerComponent) Init() {
 }
 
 func (c *InputHandlerComponent) Update() {
+	x, y := 0.0, 0.0
 	keys := sdl.GetKeyboardState()
 	typeName := reflect.TypeOf((*TransformComponent)(nil)).String()
 	pos := c.GetEntity().GetComponent(typeName).(*TransformComponent)
 
 	if keys[sdl.SCANCODE_W] == 1 {
-		pos.Y -= c.Speed
+		y -= 1
 	}
 	if keys[sdl.SCANCODE_S] == 1 {
-		pos.Y += c.Speed
+		y += 1
 	}
 	if keys[sdl.SCANCODE_A] == 1 {
-		pos.X -= c.Speed
+		x -= 1
 	}
 	if keys[sdl.SCANCODE_D] == 1 {
-		pos.X += c.Speed
+		x += 1
 	}
+
+	length := math.Sqrt(y*y + x*x)
+
+	if length > 0 {
+		x = x / length
+		y = y / length
+	}
+
+	pos.Y += y * c.Speed
+	pos.X += x * c.Speed
 }
 
 func (c *InputHandlerComponent) Draw(renderer *sdl.Renderer) {
