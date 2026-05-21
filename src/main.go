@@ -6,6 +6,7 @@ import (
 
 	"entity-prototype/src/components"
 	ecs "entity-prototype/src/entity_component_system"
+	"entity-prototype/src/entities"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -43,84 +44,22 @@ func main() {
 
 	manager := ecs.Manager{Renderer: renderer}
 
-	// Create two entities
-	player := manager.AddEntity()
-	follower := manager.AddEntity()
+	player := entities.CreatePlayer(&manager, 100, 100)
+	entities.CreateGoblin(&manager, player, 200, 200)
+
 	wall := manager.AddEntity()
+	wall.AddComponent(&components.TransformComponent{X: 30, Y: 30, Width: entities.DisplaySize, Height: entities.DisplaySize})
+	wall.AddComponent(&components.ColliderComponent{})
+	wall.AddComponent(&components.RectComponent{R: 0, G: 255, B: 0, A: 255})
 
-	// Add SpriteComponent
-	pSpriteSize := int32(16)
-	pSpriteTFramesI := int32(1)
-	pSpriteTFramesW := int32(8)
-	playerSprite := &components.SpriteComponent{
-		TexturePath: "assets/orangutan-sprite.png",
-		Animations: []components.SpriteAnimator{
-			{Name: "idle", SpriteSize: &pSpriteSize, TotalFrames: &pSpriteTFramesI},
-			{Name: "walking", SpriteSize: &pSpriteSize, TotalFrames: &pSpriteTFramesW},
-		},
+	for i := 0.0; i < 26; i++ {
+		for j := 0.0; j < 18; j++ {
+			entities.CreateBGTile(&manager, entities.TileStep*i, entities.TileStep*j)
+		}
 	}
-	followerSprite := &components.SpriteComponent{TexturePath: "assets/goblin.png"}
-
-	// Add TransformComponent to player and wall
-	playerTransform := &components.TransformComponent{X: 100, Y: 100, Width: 50, Height: 50}
-	wallTransform := &components.TransformComponent{X: 30, Y: 30, Width: 50, Height: 50}
-	followerTransform := &components.TransformComponent{X: 200, Y: 200, Width: 50, Height: 50}
-
-	// Add ColliderComponent to player and wall
-	playerCollider := &components.ColliderComponent{}
-	wallCollider := &components.ColliderComponent{}
-	followerCollider := &components.ColliderComponent{}
-
-	// Add input handler component to player
-	playerInputHandler := &components.InputHandlerComponent{Speed: 300}
-
-	// Add rect component to player and wall
-	playerRect := &components.RectComponent{R: 255, G: 0, B: 0, A: 255}
-	wallRect := &components.RectComponent{R: 0, G: 255, B: 0, A: 255}
-	followerRect := &components.RectComponent{R: 0, G: 0, B: 255, A: 255}
-
-	// Add follow component to follower
-	followerFollow := &components.FollowComponent{Destination: player, Speed: 30}
-
-	// Add components to entities
-	player.AddComponent(playerSprite)
-
-	player.AddComponent(playerTransform)
-	wall.AddComponent(wallTransform)
-	follower.AddComponent(followerTransform)
-
-	player.AddComponent(playerCollider)
-	player.AddComponent(playerInputHandler)
-	player.AddComponent(playerRect)
-
-	wall.AddComponent(wallCollider)
-	wall.AddComponent(wallRect)
-
-	follower.AddComponent(followerCollider)
-	follower.AddComponent(followerRect)
-	follower.AddComponent(followerFollow)
-	follower.AddComponent(followerSprite)
 
 	colliderType := reflect.TypeOf((*components.ColliderComponent)(nil)).String()
 	collidersGroup := manager.GetComponentGroup(colliderType)
-
-	// Render some grass
-	mW, mH := 26.0, 18.0
-
-	for i := 0.0; i < mW; i++ {
-		for j := 0.0; j < mH; j++ {
-			tile := manager.AddEntity()
-			grassSprite := &components.SpriteComponent{
-				TexturePath: "assets/grass.png",
-				Layer:       components.ZBackground,
-			}
-			grassTransform := &components.TransformComponent{
-				X: 30 * i, Y: 30 * j, Width: 50, Height: 50,
-			}
-			tile.AddComponent(grassSprite)
-			tile.AddComponent(grassTransform)
-		}
-	}
 
 	// Main loop
 	lastTime = sdl.GetTicks()
@@ -130,7 +69,6 @@ func main() {
 		dt := float64(frameStart-lastTime) / 1000.0
 		lastTime = frameStart
 
-		// Handle events
 		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 			switch event.(type) {
 			case *sdl.QuitEvent:
@@ -139,29 +77,17 @@ func main() {
 			}
 		}
 
-		// Clear the renderer
 		renderer.SetDrawColor(0, 0, 0, 255)
 		renderer.Clear()
 
-		// Update the screen
 		manager.Update(dt)
-
-		// Draw your game objects here
 		manager.Draw()
 
-		// Check for collision
 		ManageCollisions(collidersGroup)
-
-		// aabb(wallTransform, playerTransform)
-		// aabb(wallTransform, followerTransform)
-		// aabb(playerTransform, followerTransform)
 
 		renderer.Present()
 
-		// Calculate frame time
 		frameTime = sdl.GetTicks() - frameStart
-
-		// Delay the frame if needed
 		if frameDelay > frameTime {
 			sdl.Delay(frameDelay - frameTime)
 		}
