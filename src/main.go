@@ -5,8 +5,8 @@ import (
 	"reflect"
 
 	"entity-prototype/src/components"
-	ecs "entity-prototype/src/entity_component_system"
 	"entity-prototype/src/entities"
+	ecs "entity-prototype/src/entity_component_system"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -55,6 +55,10 @@ func main() {
 	for i := 0.0; i < 26; i++ {
 		for j := 0.0; j < 18; j++ {
 			entities.CreateBGTile(&manager, entities.TileStep*i, entities.TileStep*j)
+
+			if (int(i)*31+int(j)*17)%100 < 3 {
+				entities.CreateRock(&manager, entities.TileStep*i, entities.TileStep*j)
+			}
 		}
 	}
 
