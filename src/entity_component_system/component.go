@@ -9,6 +9,10 @@ type Component interface {
 	SetEntity(*Entity)
 }
 
+type Layerable interface {
+	GetLayer() int
+}
+
 type BaseComponent struct {
 	entity *Entity
 }

@@ -1,6 +1,10 @@
 package ecs
 
-import "github.com/veandco/go-sdl2/sdl"
+import (
+	"sort"
+
+	"github.com/veandco/go-sdl2/sdl"
+)
 
 type Manager struct {
 	entities []*Entity
@@ -14,7 +18,12 @@ func (m *Manager) Update(dt float64) {
 }
 
 func (m *Manager) Draw() {
-	for _, e := range m.entities {
+	sorted := make([]*Entity, len(m.entities))
+	copy(sorted, m.entities)
+	sort.SliceStable(sorted, func(i, j int) bool {
+		return sorted[i].GetLayer() < sorted[j].GetLayer()
+	})
+	for _, e := range sorted {
 		e.Draw(m.Renderer)
 	}
 }

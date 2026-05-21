@@ -104,6 +104,24 @@ func main() {
 	colliderType := reflect.TypeOf((*components.ColliderComponent)(nil)).String()
 	collidersGroup := manager.GetComponentGroup(colliderType)
 
+	// Render some grass
+	mW, mH := 26.0, 18.0
+
+	for i := 0.0; i < mW; i++ {
+		for j := 0.0; j < mH; j++ {
+			tile := manager.AddEntity()
+			grassSprite := &components.SpriteComponent{
+				TexturePath: "assets/grass.png",
+				Layer:       components.ZBackground,
+			}
+			grassTransform := &components.TransformComponent{
+				X: 30 * i, Y: 30 * j, Width: 50, Height: 50,
+			}
+			tile.AddComponent(grassSprite)
+			tile.AddComponent(grassTransform)
+		}
+	}
+
 	// Main loop
 	lastTime = sdl.GetTicks()
 	running := true

@@ -51,3 +51,12 @@ func (e *Entity) HasComponent(typeName string) bool {
 	_, ok := e.components[typeName]
 	return ok
 }
+
+func (e *Entity) GetLayer() int {
+	for _, c := range e.components {
+		if l, ok := c.(Layerable); ok {
+			return l.GetLayer()
+		}
+	}
+	return 0
+}

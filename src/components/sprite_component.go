@@ -12,11 +12,21 @@ import (
 
 const animFPS = 8.0
 
+type Layer int
+
+const (
+	ZBackground Layer = iota - 1
+	ZWorld
+	ZHUD
+)
+
 type SpriteComponent struct {
 	ecs.BaseComponent
 	TexturePath string
 	Texture     *sdl.Texture
+	Layer       Layer
 
+	// Animations
 	Animations       []SpriteAnimator
 	currentAnimation string
 	accumulator      float64
@@ -115,6 +125,10 @@ func (c *SpriteComponent) Draw(renderer *sdl.Renderer) {
 	}
 
 	renderer.Copy(c.Texture, currentFrame, &sdl.Rect{int32(pos.X), int32(pos.Y), int32(pos.Width), int32(pos.Height)})
+}
+
+func (c *SpriteComponent) GetLayer() int {
+	return int(c.Layer)
 }
 
 func (c *SpriteComponent) SetEntity(e *ecs.Entity) {
